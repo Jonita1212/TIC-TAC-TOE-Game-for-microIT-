@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tic-Tac-Toe Game</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="container">
+    <h1>Let's play</h1>
+    <h1>Tic-Tac-Toe</h1>
+    <div id="scoreBoard">
+      <span>X Wins: <span id="scoreX">0</span></span>
+      <span>O Wins: <span id="scoreO">0</span></span>
+    </div>
+    <div class="board" id="board">
+      <div class="cell" data-index="0"></div>
+      <div class="cell" data-index="1"></div>
+      <div class="cell" data-index="2"></div>
+      <div class="cell" data-index="3"></div>
+      <div class="cell" data-index="4"></div>
+      <div class="cell" data-index="5"></div>
+      <div class="cell" data-index="6"></div>
+      <div class="cell" data-index="7"></div>
+      <div class="cell" data-index="8"></div>
+    </div>
+    <p id="status">Player X's turn</p>
+
+    <div id="confetti-container" class="confetti-container"></div>
+
+    <div id="winDrawMessage" class="win-draw-message"></div>
+
+    <div class="buttons">
+      <button id="restart">🔄 Restart</button>
+      <button id="resetBtn">🗑️ Reset Score</button>
+      <button id="vsComputer">Play with Computer</button>
+    </div>
+
+    <div class="theme-toggle">
+      <label class="switch">
+        <input type="checkbox" id="darkToggle">
+        <span class="slider round"></span>
+      </label>
+    </div>
+
+    </div>
+
+  <div id="resetModal" class="modal">
+    <div class="modal-content">
+      <p>Are you sure you want to reset the score?</p>
+      <button id="confirmReset">Yes</button>
+      <button id="cancelReset">No</button>
+    </div>
+  </div>
+
+  <audio id="moveSound" src="sounds/move.mp3"></audio>
+  <audio id="winSound" src="sounds/win.mp3"></audio>
+  <audio id="drawSound" src="sounds/draw.mp3"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>

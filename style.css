@@ -1,0 +1,424 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
+
+body {
+  font-family: 'Quicksand', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #333;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.dark-mode {
+  background: linear-gradient(135deg, #121212, #1e1e1e);
+  color: #a7bfe3;
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 30px;
+  max-width: 520px;
+  width: 100%;
+  margin: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  position: relative; /* Needed for absolute positioning of children */
+  overflow: hidden;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: inherit;
+}
+
+#scoreBoard span {
+  display: inline-block;
+  margin: 10px 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: inherit;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  gap: 15px;
+  justify-content: center;
+  margin: 20px auto;
+}
+
+.cell {
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  overflow: hidden;
+  font-size: 4rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.08);
+  transition: transform 0.2s, background 0.3s, box-shadow 0.3s;
+  color: transparent; /* Make default text color transparent if using text-shadow/gradients */
+}
+
+.cell:hover {
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Player X styles */
+.cell.X {
+  background: radial-gradient(circle at center, #00f0ff 20%, #0040ff 100%);
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: 0 0 12px #00f0ff, 0 0 30px #00f0ff;
+  animation: glowIn 0.4s ease-in-out;
+}
+
+/* Player O styles */
+.cell.O {
+  background: radial-gradient(circle at center, #ff3cac 20%, #784ba0 100%);
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: 0 0 12px #ff3cac, 0 0 30px #ff3cac;
+  animation: glowIn 0.4s ease-in-out;
+}
+
+@keyframes glowIn {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.cell.winning {
+  background-color: #fff176 !important;
+  box-shadow: 0 0 15px 5px #ffe600;
+  animation: flash 0.8s infinite alternate;
+}
+
+@keyframes flash {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+
+#status {
+  font-size: 1.4rem;
+  margin: 15px auto;
+  font-weight: 500;
+  display: block;
+  color: inherit;
+}
+
+/* Win/Draw Message styles (The Box) */
+.win-draw-message {
+  visibility: hidden;
+  opacity: 0;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 80%;
+  min-width: 250px;
+  padding: 20px 30px;
+  background: rgba(237, 232, 174, 0.25);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(215, 14, 14, 0.3);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  color: inherit;
+  z-index: 7;
+
+  transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+  animation: pop 0.6s ease-out 2 alternate;
+}
+
+/* Specific colors/effects for win/draw messages (Light Mode Defaults) */
+#winDrawMessage.win-X {
+    color: #0015ff;
+    text-shadow: 0 0 15px #f7f7f5, 0 0 25px #f9f9f966;
+}
+#winDrawMessage.win-O {
+    color: #0015ff;
+    text-shadow: 0 0 15px #fffef6, 0 0 25px #FFD70066;
+}
+#winDrawMessage.draw {
+    color: #0015ff;
+    text-shadow: 0 0 10px #ccc, 0 0 20px #cccccc44;
+}
+
+.dark-mode #winDrawMessage.win-X {
+    color: #fd1616;
+    text-shadow: 0 0 18px #FFFF00, 0 0 30px #f3f3c699;
+}
+
+.dark-mode #winDrawMessage.win-O {
+    color: #fd1616;
+    text-shadow: 0 0 18px #FFFF00, 0 0 30px #ebebc199;
+}
+
+.dark-mode #winDrawMessage.draw {
+    color:#fd1616;
+    text-shadow: 0 0 12px #bbb, 0 0 25px #bbbb55;
+}
+
+/* Container for the confetti particles - Covers Full Viewport */
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 9; /* Below modals (10) and theme toggle (1000), but above the game container */
+  pointer-events: none;
+  display: none;
+}
+
+/* Style for individual confetti pieces */
+.confetti-piece {
+  position: absolute;
+  width: 8px;
+  height: 15px;
+  opacity: 0;
+  animation-timing-function: linear;
+  will-change: transform, opacity;
+}
+
+/* Keyframes for falling and rotation - Falls full viewport height */
+@keyframes fall {
+  0% { transform: translateY(0) rotateZ(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotateZ(720deg); opacity: 0; }
+}
+
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.buttons button {
+  padding: 12px 22px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.buttons button:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(1.05);
+}
+
+.dark-mode .buttons button {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.2); }
+}
+
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  padding: 20px;
+  width: 300px;
+  border-radius: 12px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+.dark-mode .modal-content {
+  background: rgba(42, 42, 42, 0.9);
+  color: #f0f0f0;
+}
+
+/* Theme Toggle Switch (Top-Right Corner) */
+.theme-toggle {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+}
+
+/* The switch itself - acts as a label for the hidden checkbox */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+  cursor: pointer;
+}
+
+/* Hide the default HTML checkbox input */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider track of the switch */
+.slider {
+  position: absolute;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 26px;
+}
+
+/* The slider thumb (the moving part with icon) */
+.slider:before {
+  position: absolute;
+  content: "☀️";
+  height: 20px; width: 20px;
+  left: 3px; bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+/* Styles when the checkbox is checked (i.e., dark mode is active) */
+input:checked + .slider {
+  /* background-color: #2196F3; - Optional */
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+  content: "🌙";
+}
+
+.slider.round {
+  border-radius: 26px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* Mobile Responsive */
+@media (max-width: 500px) {
+  .container {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  #scoreBoard span {
+      font-size: 1.1rem;
+      margin: 8px 10px;
+  }
+
+  .buttons button {
+    font-size: 1rem;
+    padding: 10px 16px;
+  }
+
+  #status {
+    font-size: 1.2rem;
+    margin: 10px auto;
+  }
+
+   .board {
+    grid-template-columns: repeat(3, 80px);
+    gap: 10px;
+    margin: 15px auto;
+  }
+
+  .cell {
+    width: 80px;
+    height: 80px;
+    font-size: 3rem;
+  }
+
+  .cell.X, .cell.O {
+     font-size: 3rem;
+  }
+
+  .theme-toggle {
+    top: 5px;
+    right: 5px;
+  }
+
+  .switch {
+    width: 40px;
+    height: 22px;
+  }
+
+  .slider {
+     border-radius: 22px;
+  }
+
+  .slider:before {
+    height: 18px; width: 18px;
+    left: 2px; bottom: 2px;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(18px);
+  }
+
+  /* Adjust font size for win/draw message on mobile */
+  .win-draw-message {
+      font-size: 1.8rem;
+      padding: 15px 20px;
+      min-width: 200px;
+  }
+}
